@@ -1,9 +1,9 @@
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { app } from "./firebase";
-const firestore = getFirestore(app);
 import "./App.css";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
+import { app } from "./firebase";
+
+const firestore = getFirestore(app); // get firebase service in app
 
 const App = () => {
   let inpRef = useRef({});
@@ -48,7 +48,6 @@ const App = () => {
     "🥰",
   ];
 
-  let [storeFeedback, setFeedback] = useState([]);
   let [isSubmit, setSubmit] = useState(true);
   const handleClick = async () => {
     const form = {
@@ -58,15 +57,18 @@ const App = () => {
       form[val] = inpRef.current[val].value;
     });
 
-    setFeedback((prev) => [...prev, form]);
     if (form.feedback) {
       setSubmit(false);
     } else {
       alert("what about me 😙");
     }
 
-    const result = await addDoc(collection(firestore, "harshita"), form);
-    console.log(result.id);
+    try {
+      const key = await addDoc(collection(firestore, "Harshita"), form);
+      console.log(key);
+    } catch (e) {
+      console.error("error adding data" + e);
+    }
   };
 
   return (
