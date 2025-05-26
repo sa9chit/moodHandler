@@ -65,7 +65,7 @@ const App = () => {
 
     try {
       const key = await addDoc(collection(firestore, "Harshita"), form);
-      console.log(key);
+    
     } catch (e) {
       console.error("error adding data" + e);
     }
